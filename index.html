@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+</style>
 <script>
     var teamSizes = { "ffa": 1, "2v2": 2, "3v3": 3, "4v4": 4, "6v6": 6 };
 
@@ -103,7 +112,7 @@
 </head>
 <body>
 <h1>Lounge MMR Calculator</h1>
-<p>Ties are not supported yet sorry!</p>
+<p>Ties are not supported yet sorry! The site is still work in progress, so please excuse the bad design.</p>
 <p>Select the event format:</p>
 <div>
     <form name="formatRadio" id="format-radio" action="" onchange="onFormatChanged()">
