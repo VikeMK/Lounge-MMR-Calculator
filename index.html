@@ -37,21 +37,37 @@ table, th, td {
 
         for (var i = 1; i <= 12; i++) {
             var placeCol = document.getElementById("place-" + i);
+            var isTieCol = document.getElementById("is-tie-td-" + i);
             if (((i - 1) % teamSize) == 0) {
                 placeCol.rowSpan = teamSize;
                 placeCol.style.display = "";
                 placeCol.innerHTML = ((i - 1) / teamSize) + 1;
+
+                isTieCol.rowSpan = teamSize;
+                isTieCol.style.display = "";
             } else {
                 placeCol.style.display = "none";
+                isTieCol.style.display = "none";
+            }
+
+            if (i > 1) {
+                document.getElementById("is-tie-" + i).checked = false;
             }
         }
+
+        clearOutputs();
     }
 
     function clearInputs() {
         for (var i = 1; i <= 12; i++) {
             document.getElementById("name-" + i).value = "";
             document.getElementById("mmr-" + i).value = "";
+            
+            if (i > 1) {
+                document.getElementById("is-tie-" + i).checked = false;
+            }
         }
+        
         clearOutputs();
     }
 
@@ -81,12 +97,22 @@ table, th, td {
 
         var mmrDeltas = [];
         for (var i = 0; i < teams; i++) {
+            var iPlace = parseInt(document.getElementById("place-" + (i * teamSize + 1)).innerHTML);
+            var iMMR = averageMMRs[i];
+
             var total = 0;
             for (var j = 0; j < teams; j++) {
-                if (i < j) {
-                    total += getMmrDeltaWhenWon(teamSize, averageMMRs[i], averageMMRs[j]);
+                var jPlace = parseInt(document.getElementById("place-" + (j * teamSize + 1)).innerHTML);
+                var jMMR = averageMMRs[j];
+
+                if (i === j) {
+                    continue;
+                } else if (iPlace === jPlace) {
+                    total += (iMMR < jMMR ? 1 : -1) * getMmrDeltaWhenTied(teamSize, iMMR, jMMR);
+                } else if (i < j) {
+                    total += getMmrDeltaWhenWon(teamSize, iMMR, jMMR);
                 } else if (i > j) {
-                    total -= getMmrDeltaWhenWon(teamSize, averageMMRs[j], averageMMRs[i]);
+                    total -= getMmrDeltaWhenWon(teamSize, jMMR, iMMR);
                 }
             }
             mmrDeltas.push(Math.round(total));
@@ -108,11 +134,25 @@ table, th, td {
             document.getElementById("new-mmr-" + i).innerHTML = "";
         }
     }
+
+    function onTieCheckboxClicked() {
+        var teamSize = getCurrentTeamSize();
+        var teams = 12 / teamSize;
+
+        var curPlace = 1;
+        for (var i = 2; i <= teams; i++) {
+            var tableRow = (i - 1) * teamSize + 1;
+            var placeCol = document.getElementById("place-" + tableRow);
+            var isTie = document.getElementById("is-tie-" + tableRow).checked;
+            curPlace = isTie ? curPlace : i;
+            placeCol.innerHTML = curPlace;
+        }
+    }
 </script>
 </head>
 <body>
 <h1>Lounge MMR Calculator</h1>
-<p>Ties are not supported yet sorry! The site is still work in progress, so please excuse the bad design.</p>
+<p>The site is still work in progress, so please excuse the bad design.</p>
 <p>To use the site, select the format type, then fill out the MMR column (and optionally the Name column), then hit Calculate.</p>
 <p>Select the event format:</p>
 <div>
@@ -133,6 +173,7 @@ table, th, td {
     <table>
         <tr>
             <th>Place</th>
+            <th>Tie?</th>
             <th>Name</th>
             <th>MMR</th>
             <th>Change</th>
@@ -140,6 +181,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-1">1</td>
+            <td id="is-tie-td-1"></td>
             <td><input type="text" id="name-1" tabindex="1"></td>
             <td><input type="number" min="0" id="mmr-1" tabindex="13"></td>
             <td><div id="change-1"></div></td>
@@ -147,6 +189,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-2">2</td>
+            <td id="is-tie-td-2"><input type="checkbox" id="is-tie-2" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-2" tabindex="2"></td>
             <td><input type="number" min="0" id="mmr-2" tabindex="14"></td>
             <td><div id="change-2"></div></td>
@@ -154,6 +197,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-3">3</td>
+            <td id="is-tie-td-3"><input type="checkbox" id="is-tie-3" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-3" tabindex="3"></td>
             <td><input type="number" min="0" id="mmr-3" tabindex="15"></td>
             <td><div id="change-3"></div></td>
@@ -161,6 +205,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-4">4</td>
+            <td id="is-tie-td-4"><input type="checkbox" id="is-tie-4" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-4" tabindex="4"></td>
             <td><input type="number" min="0" id="mmr-4" tabindex="16"></td>
             <td><div id="change-4"></div></td>
@@ -168,6 +213,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-5">5</td>
+            <td id="is-tie-td-5"><input type="checkbox" id="is-tie-5" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-5" tabindex="5"></td>
             <td><input type="number" min="0" id="mmr-5" tabindex="17"></td>
             <td><div id="change-5"></div></td>
@@ -175,6 +221,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-6">6</td>
+            <td id="is-tie-td-6"><input type="checkbox" id="is-tie-6" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-6" tabindex="6"></td>
             <td><input type="number" min="0" id="mmr-6" tabindex="18"></td>
             <td><div id="change-6"></div></td>
@@ -182,6 +229,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-7">7</td>
+            <td id="is-tie-td-7"><input type="checkbox" id="is-tie-7" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-7" tabindex="7"></td>
             <td><input type="number" min="0" id="mmr-7" tabindex="19"></td>
             <td><div id="change-7"></div></td>
@@ -189,6 +237,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-8">8</td>
+            <td id="is-tie-td-8"><input type="checkbox" id="is-tie-8" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-8" tabindex="8"></td>
             <td><input type="number" min="0" id="mmr-8" tabindex="20"></td>
             <td><div id="change-8"></div></td>
@@ -196,6 +245,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-9">9</td>
+            <td id="is-tie-td-9"><input type="checkbox" id="is-tie-9" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-9" tabindex="9"></td>
             <td><input type="number" min="0" id="mmr-9" tabindex="21"></td>
             <td><div id="change-9"></div></td>
@@ -203,6 +253,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-10">10</td>
+            <td id="is-tie-td-10"><input type="checkbox" id="is-tie-10" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-10" tabindex="10"></td>
             <td><input type="number" min="0" id="mmr-10" tabindex="22"></td>
             <td><div id="change-10"></div></td>
@@ -210,6 +261,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-11">11</td>
+            <td id="is-tie-td-11"><input type="checkbox" id="is-tie-11" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-11" tabindex="11"></td>
             <td><input type="number" min="0" id="mmr-11" tabindex="23"></td>
             <td><div id="change-11"></div></td>
@@ -217,6 +269,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-12">12</td>
+            <td id="is-tie-td-12"><input type="checkbox" id="is-tie-12" onclick="onTieCheckboxClicked()"></td>
             <td><input type="text" id="name-12" tabindex="12"></td>
             <td><input type="number" min="0" id="mmr-12" tabindex="24"></td>
             <td><div id="change-12"></div></td>
