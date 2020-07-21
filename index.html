@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-table {
-  border-collapse: collapse;
-}
-
-table, th, td {
-  border: 1px solid black;
-}
-</style>
+<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+<style>#format-radio label { display: inline; padding-right: 50px; }</style>
 <script>
     var teamSizes = { "ffa": 1, "2v2": 2, "3v3": 3, "4v4": 4, "6v6": 6 };
 
@@ -133,9 +126,10 @@ table, th, td {
             document.getElementById("change-" + i).innerHTML = "";
             document.getElementById("new-mmr-" + i).innerHTML = "";
         }
+        updatePlaceLabels();
     }
 
-    function onTieCheckboxClicked() {
+    function updatePlaceLabels() {
         var teamSize = getCurrentTeamSize();
         var teams = 12 / teamSize;
 
@@ -152,21 +146,18 @@ table, th, td {
 </head>
 <body>
 <h1>Lounge MMR Calculator</h1>
-<p>The site is still work in progress, so please excuse the bad design.</p>
-<p>To use the site, select the format type, then fill out the MMR column (and optionally the Name column), then hit Calculate.</p>
-<p>Select the event format:</p>
 <div>
     <form name="formatRadio" id="format-radio" action="" onchange="onFormatChanged()">
-        <label for="format-choice-ffa">FFA</label>
         <input type="radio" id="format-choice-ffa" name="format" value="ffa" checked>
-        <label for="format-choice-2v2">2v2</label>
+        <label for="format-choice-ffa">FFA</label>
         <input type="radio" id="format-choice-2v2" name="format" value="2v2">
-        <label for="format-choice-3v3">3v3</label>
+        <label for="format-choice-2v2">2v2</label>
         <input type="radio" id="format-choice-3v3" name="format" value="3v3">
-        <label for="format-choice-4v4">4v4</label>
+        <label for="format-choice-3v3">3v3</label>
         <input type="radio" id="format-choice-4v4" name="format" value="4v4">
-        <label for="format-choice-6v6">6v6</label>
+        <label for="format-choice-4v4">4v4</label>
         <input type="radio" id="format-choice-6v6" name="format" value="6v6">
+        <label for="format-choice-6v6">6v6</label>
     </form>
 </div>
 <div id="tables">
@@ -189,7 +180,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-2">2</td>
-            <td id="is-tie-td-2"><input type="checkbox" id="is-tie-2" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-2"><input type="checkbox" id="is-tie-2" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-2" tabindex="2"></td>
             <td><input type="number" min="0" id="mmr-2" tabindex="14"></td>
             <td><div id="change-2"></div></td>
@@ -197,7 +188,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-3">3</td>
-            <td id="is-tie-td-3"><input type="checkbox" id="is-tie-3" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-3"><input type="checkbox" id="is-tie-3" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-3" tabindex="3"></td>
             <td><input type="number" min="0" id="mmr-3" tabindex="15"></td>
             <td><div id="change-3"></div></td>
@@ -205,7 +196,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-4">4</td>
-            <td id="is-tie-td-4"><input type="checkbox" id="is-tie-4" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-4"><input type="checkbox" id="is-tie-4" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-4" tabindex="4"></td>
             <td><input type="number" min="0" id="mmr-4" tabindex="16"></td>
             <td><div id="change-4"></div></td>
@@ -213,7 +204,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-5">5</td>
-            <td id="is-tie-td-5"><input type="checkbox" id="is-tie-5" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-5"><input type="checkbox" id="is-tie-5" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-5" tabindex="5"></td>
             <td><input type="number" min="0" id="mmr-5" tabindex="17"></td>
             <td><div id="change-5"></div></td>
@@ -221,7 +212,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-6">6</td>
-            <td id="is-tie-td-6"><input type="checkbox" id="is-tie-6" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-6"><input type="checkbox" id="is-tie-6" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-6" tabindex="6"></td>
             <td><input type="number" min="0" id="mmr-6" tabindex="18"></td>
             <td><div id="change-6"></div></td>
@@ -229,7 +220,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-7">7</td>
-            <td id="is-tie-td-7"><input type="checkbox" id="is-tie-7" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-7"><input type="checkbox" id="is-tie-7" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-7" tabindex="7"></td>
             <td><input type="number" min="0" id="mmr-7" tabindex="19"></td>
             <td><div id="change-7"></div></td>
@@ -237,7 +228,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-8">8</td>
-            <td id="is-tie-td-8"><input type="checkbox" id="is-tie-8" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-8"><input type="checkbox" id="is-tie-8" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-8" tabindex="8"></td>
             <td><input type="number" min="0" id="mmr-8" tabindex="20"></td>
             <td><div id="change-8"></div></td>
@@ -245,7 +236,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-9">9</td>
-            <td id="is-tie-td-9"><input type="checkbox" id="is-tie-9" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-9"><input type="checkbox" id="is-tie-9" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-9" tabindex="9"></td>
             <td><input type="number" min="0" id="mmr-9" tabindex="21"></td>
             <td><div id="change-9"></div></td>
@@ -253,7 +244,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-10">10</td>
-            <td id="is-tie-td-10"><input type="checkbox" id="is-tie-10" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-10"><input type="checkbox" id="is-tie-10" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-10" tabindex="10"></td>
             <td><input type="number" min="0" id="mmr-10" tabindex="22"></td>
             <td><div id="change-10"></div></td>
@@ -261,7 +252,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-11">11</td>
-            <td id="is-tie-td-11"><input type="checkbox" id="is-tie-11" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-11"><input type="checkbox" id="is-tie-11" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-11" tabindex="11"></td>
             <td><input type="number" min="0" id="mmr-11" tabindex="23"></td>
             <td><div id="change-11"></div></td>
@@ -269,7 +260,7 @@ table, th, td {
         </tr>
         <tr>
             <td id="place-12">12</td>
-            <td id="is-tie-td-12"><input type="checkbox" id="is-tie-12" onclick="onTieCheckboxClicked()"></td>
+            <td id="is-tie-td-12"><input type="checkbox" id="is-tie-12" onclick="updatePlaceLabels()"></td>
             <td><input type="text" id="name-12" tabindex="12"></td>
             <td><input type="number" min="0" id="mmr-12" tabindex="24"></td>
             <td><div id="change-12"></div></td>
@@ -281,5 +272,23 @@ table, th, td {
     <button onclick="calculateMMR()">Calculate</button>
     <button onclick="clearInputs()">Clear</button>
 </div>
+<h2>Instructions</h2>
+<ol>
+    <li>Select the format type.</l1>
+    <li>Fill out the player names (optional).</li>
+    <li>Fill out the MMR for each player.</li>
+    <li>If there is a tie, tick the checkbox on the team that tied.</li>
+    <li>Press the "Calculate" button.</li>
+</ol>
+<h3>Credits</h3>
+<p>
+This site was made by Vike.
+<ul>
+    <li>Twitter: <a href="https://twitter.com/VikeMK">@VikeMK</a></li>
+    <li>GitHub: <a href="https://github.com/vikemk">VikeMK</a></li>
+    <li>Discord: Vike#9470</li>
+</ul>
+The source code for this website can be found on my <a href="https://github.com/VikeMK/Lounge-MMR-Calculator">GitHub</a>.
+</p>
 </body>
 </html>
