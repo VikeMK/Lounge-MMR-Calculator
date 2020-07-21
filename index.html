@@ -113,7 +113,8 @@
 
         for (var i = 0; i < 12; i++) {
             var delta = mmrDeltas[Math.floor(i / teamSize)];
-            var newMmr = mmrs[i] + delta;
+            var newMmr = Math.max(0, mmrs[i] + delta);
+            delta = newMmr - mmrs[i];
 
             var deltaStr = delta < 0 ? ""+delta : "+" + delta;
             document.getElementById("change-" + (i + 1)).innerHTML = deltaStr;
@@ -145,7 +146,7 @@
 </script>
 </head>
 <body>
-<h1>Lounge MMR Calculator</h1>
+<h1>MK8DX Lounge MMR Calculator</h1>
 <div>
     <form name="formatRadio" id="format-radio" action="" onchange="onFormatChanged()">
         <input type="radio" id="format-choice-ffa" name="format" value="ffa" checked>
